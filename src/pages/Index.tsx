@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileUpload } from "@/components/FileUpload";
 import { QueryInput } from "@/components/QueryInput";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
@@ -18,16 +18,36 @@ const Index = () => {
   const [documents, setDocuments] = useState<string[]>([]);
   const [results, setResults] = useState<RankedResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem(API_KEY_STORAGE_KEY) || "");
+  const [apiKey, setApiKey] = useState("");
   const { toast } = useToast();
+
+  // Safely load API key from localStorage on component mount
+  useEffect(() => {
+    try {
+      const savedApiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+      if (savedApiKey) {
+        setApiKey(savedApiKey);
+      }
+    } catch (error) {
+      console.warn("LocalStorage is not available");
+    }
+  }, []);
 
   const handleApiKeySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
-    toast({
-      title: "API Key Saved",
-      description: "Your API key has been saved securely",
-    });
+    try {
+      localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
+      toast({
+        title: "API Key Saved",
+        description: "Your API key has been saved securely",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not save API key to local storage",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleFileUpload = async (text: string) => {
