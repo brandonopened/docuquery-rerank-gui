@@ -3,10 +3,9 @@ import { useDropzone } from "react-dropzone";
 import { Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import * as pdfjsLib from 'pdfjs-dist';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
 
 // Set worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
 interface FileUploadProps {
   onUpload: (text: string) => void;
