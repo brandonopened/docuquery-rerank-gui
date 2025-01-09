@@ -4,8 +4,13 @@ import { Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Set worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+// Initialize PDF.js worker
+if (typeof window !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.js',
+    import.meta.url
+  ).toString();
+}
 
 interface FileUploadProps {
   onUpload: (text: string) => void;
