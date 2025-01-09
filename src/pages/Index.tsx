@@ -11,6 +11,8 @@ interface RankedResult {
   score: number;
 }
 
+const COHERE_API_KEY = "VvImZNZXUXLfUq23reRIyTTlqI2SvRiQOBOwKK18"; // This should be moved to a secure location
+
 const Index = () => {
   const [documents, setDocuments] = useState<string[]>([]);
   const [results, setResults] = useState<RankedResult[]>([]);
@@ -32,7 +34,7 @@ const Index = () => {
       const response = await fetch("https://api.cohere.ai/v1/rerank", {
         method: "POST",
         headers: {
-          "Authorization": "Bearer YOUR_API_KEY",
+          "Authorization": `Bearer ${COHERE_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
