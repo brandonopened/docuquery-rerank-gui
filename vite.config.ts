@@ -25,5 +25,6 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['pdfjs-dist']
-  }
+  },
+  publicDir: 'public'
 }));
